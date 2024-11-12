@@ -39,9 +39,9 @@ public class Leetcode3 {
 
     @Test
     public void test(){
-        String s = " ";
+        String s = "abba";
         //滑动窗口思想
-        System.out.println(lengthOfLongestSubstringV3(s));
+        System.out.println(lengthOfLongestSubstringV4(s));
     }
 
 
@@ -104,5 +104,30 @@ public class Leetcode3 {
             last[index] = i;
         }
         return res;
+    }
+
+    /**
+     * time 5ms
+     * memory 43.58MB
+     * @param s
+     * @return
+     */
+    public int lengthOfLongestSubstringV4(String s) {
+        //用map存储字符的位置，如果滑窗end出现重复的字符，则修改滑窗start的位置，同时更新字符的位置，更新最大窗口长度
+        Map<Character,Integer> map = new HashMap<Character,Integer>();
+        int start = 0;
+        int end;
+        int len = s.length();
+        int mSize = 0;
+        for(end=0;end<len;end++){
+            char c = s.charAt(end);
+            if(map.containsKey(c)){
+                int index = map.get(c);
+                start = start>index+1?start:index+1;
+            }
+            mSize = mSize>end-start+1?mSize:end-start+1;
+            map.put(c,end);
+        }
+        return mSize;
     }
 }
